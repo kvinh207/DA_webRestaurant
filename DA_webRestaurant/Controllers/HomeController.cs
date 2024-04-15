@@ -1,4 +1,4 @@
-using DA_webRestaurant.Models;
+using Entity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -1,9 +1,10 @@
-using DA_webRestaurant.Data;
-using DA_webRestaurant.Models;
-using DA_webRestaurant.Utility;
+using DAL;
+using DAL.Context;
+using Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +12,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddDefaultTokenProviders()
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddIdentity<Employee, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-.AddDefaultTokenProviders()
-.AddDefaultUI()
-.AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 
 builder.Services.AddDistributedMemoryCache();
@@ -41,6 +43,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 // Add services to the container.
 
+builder.Services.AddScoped<UnitOfWork>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -58,6 +62,27 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        // Retrieve the role manager service
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        // Ensure roles exist
+        await EnsureRolesExist(roleManager);
+    }
+    catch (Exception ex)
+    {
+        // Handle any exceptions
+        Console.WriteLine("An error occurred while ensuring roles exist: " + ex.Message);
+    }
+}
+
+
 app.UseAuthorization();
 app.UseSession();
 app.UseEndpoints(endpoints =>
@@ -76,3 +101,24 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+static async Task EnsureRolesExist(RoleManager<IdentityRole> roleManager)
+{
+    // List of roles to ensure
+    var roles = new[]
+    {
+        SD.Role_Management,
+        SD.Role_Admin,
+        SD.Role_Customer,
+        SD.Role_Employee,
+    };
+
+    foreach (var roleName in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            // Role doesn't exist, create it
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
