@@ -1,0 +1,83 @@
+﻿@model Entity.Booking
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<link rel="stylesheet" href="/css/Khachdatban.css"/>
+<div class="container">
+    <form id="reservation-form" asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="GuestName" class="control-label">Guest Name</label>
+                    <input asp-for="GuestName" class="form-control" />
+                    <span asp-validation-for="GuestName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BookingDate" class="control-label">Booking Date</label>
+                    <input asp-for="BookingDate" class="form-control" />
+                    <span asp-validation-for="BookingDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PeopleCount" class="control-label">Status</label>
+                    <input asp-for="PeopleCount" class="form-control" />
+                    <span asp-validation-for="PeopleCount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Note" class="control-label">Note</label>
+                    <input asp-for="Note" class="form-control" />
+                    <span asp-validation-for="Note" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<div><hr></div>
+<div id="thank-you-section">
+    <h2>Cảm ơn quý khách đã đặt bàn!</h2>
+    <p>Thông tin đặt bàn của bạn:</p>
+    <ul>
+        <li>Họ và tên: <span id="name-display"></span><hr></li>
+        <li>Email: <span id="email-display"></span><hr></li>
+        <li>Số điện thoại: <span id="phone-display"></span><hr></li>
+        <li>Ngày đặt bàn: <span id="date-display"></span><hr></li>
+        <li>Thời gian đặt bàn: <span id="time-display"></span><hr></li>
+        <li>Số lượng khách: <span id="guests-display"></span><hr></li>
+    </ul>
+    <p>Chúng tôi sẽ liên hệ xác nhận đặt bàn trong thời gian ngắn nhất.</p>
+</div>
+
+<script>
+    document.getElementById("reservation-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the form data
+        var formData = new FormData(this);
+
+        // Populate the span elements with the form data
+        document.getElementById("name-display").textContent = formData.get("GuestName");
+        document.getElementById("email-display").textContent = formData.get("Email");
+        document.getElementById("phone-display").textContent = formData.get("PhoneNumber");
+        document.getElementById("date-display").textContent = formData.get("BookingDate");
+        document.getElementById("time-display").textContent = formData.get("BookingTime");
+        document.getElementById("guests-display").textContent = formData.get("NumberOfGuests");
+
+        // Show the thank you section
+        document.getElementById("thank-you-section").style.display = "block";
+    });
+</script>

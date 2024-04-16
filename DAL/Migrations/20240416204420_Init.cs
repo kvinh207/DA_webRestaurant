@@ -57,12 +57,11 @@ namespace DAL.Migrations
                 {
                     BookingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TableCount = table.Column<int>(type: "int", nullable: true),
-                    PeopleCount = table.Column<int>(type: "int", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GuestName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +106,7 @@ namespace DAL.Migrations
                     Type = table.Column<int>(type: "int", nullable: true),
                     NumberOfSeats = table.Column<int>(type: "int", nullable: false),
                     IsReserved = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,6 +220,26 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalPrice = table.Column<float>(type: "real", nullable: true),
+                    RevenueReportId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_RevenueReports_RevenueReportId",
+                        column: x => x.RevenueReportId,
+                        principalTable: "RevenueReports",
+                        principalColumn: "RevenueReportId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MenuItems",
                 columns: table => new
                 {
@@ -229,7 +248,8 @@ namespace DAL.Migrations
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,27 +260,11 @@ namespace DAL.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalPrice = table.Column<float>(type: "real", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Orders_Tables_TableId",
-                        column: x => x.TableId,
-                        principalTable: "Tables",
-                        principalColumn: "TableId",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_MenuItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -308,9 +312,14 @@ namespace DAL.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_TableId",
+                name: "IX_MenuItems_OrderId",
+                table: "MenuItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_RevenueReportId",
                 table: "Orders",
-                column: "TableId");
+                column: "RevenueReportId");
         }
 
         /// <inheritdoc />
@@ -338,10 +347,7 @@ namespace DAL.Migrations
                 name: "MenuItems");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "RevenueReports");
+                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -353,7 +359,10 @@ namespace DAL.Migrations
                 name: "Category");
 
             migrationBuilder.DropTable(
-                name: "Tables");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "RevenueReports");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace DA_webRestaurant.Areas.Customer.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index1()
         {
             return View();
         }

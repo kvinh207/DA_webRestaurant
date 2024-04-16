@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.Context;
 using Entity;
+using DAL;
+using DAL.Repositories;
+using System.Linq.Expressions;
 
 namespace DA_webRestaurant.Areas.Admin.Controllers
 {
@@ -14,9 +17,10 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
     public class RevenueReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public RevenueReportsController(ApplicationDbContext context)
+        private readonly UnitOfWork _unitOfWork;
+        public RevenueReportsController(ApplicationDbContext context, UnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _context = context;
         }
 
@@ -54,15 +58,36 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RevenueReportId,StartDate,EndDate,TotalRevenue,EmployeeEmail")] RevenueReport revenueReport)
+        public async Task<IActionResult> Create([Bind("StartDate,EndDate,EmployeeEmail")] RevenueReport revenueReport)
         {
+            DateTime startDate = revenueReport.StartDate;
+            DateTime? endDate = revenueReport.EndDate;
+
+            Expression<Func<Order, bool>> filter = order => order.OrderDate >= startDate && order.OrderDate <= endDate;
+
+            var OrdersOfTheDay = _unitOfWork.OrderRepository.GetAll(filter: filter);
+
+            revenueReport.TotalRevenue = CalculateRevenue((List<Order>)OrdersOfTheDay);
+
             if (ModelState.IsValid)
             {
-                _context.Add(revenueReport);
-                await _context.SaveChangesAsync();
+                _unitOfWork.RevenueReportRepository.Add(revenueReport);
+                _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(revenueReport);
+        }
+
+        private float? CalculateRevenue(List<Order> order)
+        {
+            float? rev = 0;
+
+            foreach (var item in order)
+            {
+                rev += item.TotalPrice;
+            }
+
+            return rev;
         }
 
         // GET: Admin/RevenueReports/Edit/5

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240416101804_Init")]
+    [Migration("20240416204420_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -109,17 +109,15 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PeopleCount")
-                        .HasColumnType("int");
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TableCount")
                         .HasColumnType("int");
 
                     b.HasKey("BookingId");
@@ -162,12 +160,17 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
                     b.HasKey("MenuItemId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("MenuItems");
                 });
@@ -183,15 +186,15 @@ namespace DAL.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TableId")
+                    b.Property<int?>("RevenueReportId")
                         .HasColumnType("int");
 
-                    b.Property<float>("TotalPrice")
+                    b.Property<float?>("TotalPrice")
                         .HasColumnType("real");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("TableId");
+                    b.HasIndex("RevenueReportId");
 
                     b.ToTable("Orders");
                 });
@@ -236,7 +239,7 @@ namespace DAL.Migrations
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<int?>("Type")
@@ -388,18 +391,18 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entity.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Entity.Order", b =>
                 {
-                    b.HasOne("Entity.Table", "Table")
-                        .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Table");
+                    b.HasOne("Entity.RevenueReport", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("RevenueReportId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -451,6 +454,16 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entity.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("Entity.RevenueReport", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

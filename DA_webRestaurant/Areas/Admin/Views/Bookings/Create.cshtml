@@ -1,4 +1,4 @@
-﻿@model BookingVM
+﻿@model Booking
 
 @{
     ViewData["Title"] = "View";
@@ -16,7 +16,6 @@
     <title>Admin page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <!-- link bên VSCode -->
     <link rel="stylesheet" href="styles.min.css">
     <link rel="stylesheet" href="booking-styles.css">
@@ -25,6 +24,7 @@
     <link rel="stylesheet" href="~/css/styles.min.css" />
     <link rel="stylesheet" href="~/css/booking-styles.css">
     <!--  -->
+    <script src="/js/Booking.js"></script>
 
 </head>
 
@@ -32,13 +32,13 @@
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
          data-sidebar-position="fixed" data-header-position="fixed">
-            @* <!-- Footer Start -->
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; Web-Restaurant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-            </footer>
-            <!-- Footer End -->
+        @* <!-- Footer Start -->
+        <footer class="border-top footer text-muted">
+        <div class="container">
+        &copy; Web-Restaurant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+        </footer>
+        <!-- Footer End -->
         </aside> *@
         <!--  Sidebar End -->
         <!--  Main wrapper -->
@@ -46,42 +46,35 @@
             <main>
                 <section id="booking-section">
                     <h1>Đặt bàn</h1>
-                    <form id="booking-form">
+                    <form asp-action="Create" method="post" id="booking-form">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label for="name">Tên khách hàng:</label>
-                            <input asp-for="Booking.GuestName" type="text" id="name" name="name" value="Ten khach hang" required>
+                            <input asp-for="GuestName" type="text" id="name" name="GuestName" value="Ten khach hang" required>
+                            <span asp-validation-for="GuestName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="datetime">Ngày giờ đặt bàn:</label>
-                            <input asp-for="Booking.BookingDate" type="datetime-local" id="datetime" name="datetime" required>
+                            <input asp-for="BookingDate" type="datetime-local" id="datetime" name="BookingDate" required>
+                            <span asp-validation-for="BookingDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại:</label>
-                            <input asp-for="Booking.PhoneNumber" type="tel" id="phone" name="phone" required>
+                            <input asp-for="PhoneNumber" type="tel" id="phone" name="PhoneNumber" required>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="guests">Số lượng người:</label>
-                            <input asp-for="Booking.PeopleCount" type="number" id="guests" name="guests" required>
+                            <input asp-for="PeopleCount" type="number" id="guests" name="PeopleCount" required>
+                            <span asp-validation-for="PeopleCount" class="text-danger"></span>
                         </div>
-                        <!-- Button to open the popup -->
-                        <button id="openPopupButton">Open Popup</button>
-
-                        <!-- Popup modal -->
-                        <div id="popupModal" style="display: none;">
-                            <div id="gridContainer" class="grid-container">
-                                <!-- Grid items will be populated here -->
-                            </div>
-                            <button id="closePopupButton">Close</button>
-                        </div>
+                        <!-- hidden input for tables-->
                         <div class="form-group">
                             <label for="note">Ghi chú:</label>
                             <textarea id="note" name="note"></textarea>
                         </div>
-                        <button type="submit">Đặt bàn</button>
+                        <button id="submitform" type="submit">Đặt bàn</button>
                     </form>
-                   
-
-
                 </section>
             </main>
             <!-- Content End -->
@@ -92,64 +85,9 @@
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
-@* @IgnoreSection("Scripts")
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} *@
-
-<script>
-    $(document).ready(function () {
-        // Initialize an array to store table data
-        var tables = @Html.Raw(Json.Serialize(Model.Table));
-
-        // Function to populate the grid with items
-        function populateGrid() {
-            // Clear the grid container
-            $("#gridContainer").empty();
-
-            // Populate the grid with items from the tables array
-            tables.forEach(function (table) {
-                // Create a grid item
-                var gridItem = $("<div class='grid-item'>Table: " + table.tableId + "</div>");
-                if (table.isReserved) {
-                    gridItem.addClass('reserved');
-                } else {
-                    gridItem.addClass('available');
-                }
-
-                // Add click event handler to select the item
-                gridItem.click(function () {
-                    // Example: perform some action with the selected item
-                    console.log("Selected table:", table);
-                });
-
-                // Append the grid item to the grid container
-                $("#gridContainer").append(gridItem);
-            });
-        }
-
-        // Event handler for opening the popup
-        $("#openPopupButton").click(function () {
-            // Show the popup
-            $("#popupModal").show();
-
-            // Call a function to populate the grid with items
-            populateGrid();
-        });
-
-        // Event handler for closing the popup
-        $("#closePopupButton").click(function () {
-            // Hide the popup
-            $("#popupModal").hide();
-        });
-
-        // Trigger the change event to populate the number of seats on page load
-        populateGrid();
-    });
 
 
-
-</script>

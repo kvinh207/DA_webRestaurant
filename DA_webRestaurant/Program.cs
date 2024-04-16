@@ -73,6 +73,30 @@ using var scope = app.Services.CreateScope();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+var rolesToCreate = new List<string> { "Admin", "Customer", "Employee" };
+
+foreach (var roleName in rolesToCreate)
+{
+    // Check if the role exists
+    var roleExists = await roleManager.RoleExistsAsync(roleName);
+
+    // If the role doesn't exist, create it
+    if (!roleExists)
+    {
+        var role = new IdentityRole(roleName);
+        var result = await roleManager.CreateAsync(role);
+        if (result.Succeeded)
+        {
+            Console.WriteLine($"Role '{roleName}' created successfully.");
+        }
+        else
+        {
+            Console.WriteLine($"Error creating role '{roleName}'.");
+            // Handle error
+        }
+    }
+}
+
 var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
 var employeeRoleExists = await roleManager.RoleExistsAsync("Employee");
 if (!adminRoleExists || !employeeRoleExists)
@@ -109,29 +133,7 @@ if (adminUser == null)
     
 }
 
-var rolesToCreate = new List<string> { "Admin", "Customer", "Employee" };
 
-foreach (var roleName in rolesToCreate)
-{
-    // Check if the role exists
-    var roleExists = await roleManager.RoleExistsAsync(roleName);
-
-    // If the role doesn't exist, create it
-    if (!roleExists)
-    {
-        var role = new IdentityRole(roleName);
-        var result = await roleManager.CreateAsync(role);
-        if (result.Succeeded)
-        {
-            Console.WriteLine($"Role '{roleName}' created successfully.");
-        }
-        else
-        {
-            Console.WriteLine($"Error creating role '{roleName}'.");
-            // Handle error
-        }
-    }
-}
 
 
 

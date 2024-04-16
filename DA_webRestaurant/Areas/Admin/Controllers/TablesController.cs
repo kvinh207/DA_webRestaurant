@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.Context;
 using Entity;
+using DAL;
 
 namespace DA_webRestaurant.Areas.Admin.Controllers
 {
@@ -14,9 +15,11 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
     public class TablesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
 
-        public TablesController(ApplicationDbContext context)
+        public TablesController(ApplicationDbContext context, UnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _context = context;
         }
 
@@ -54,13 +57,9 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TableId,Type,NumberOfSeats,IsReserved,Status")] Table table)
         {
-			
-			
-                _context.Add(table);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-
-
+            _context.Add(table);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)

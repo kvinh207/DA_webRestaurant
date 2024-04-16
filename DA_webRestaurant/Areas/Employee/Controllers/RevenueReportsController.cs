@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Context;
 using Entity;
 
-namespace DA_webRestaurant.Areas.Admin.Controllers
+namespace DA_webRestaurant.Areas.Employee.Controllers
 {
-    [Area("Admin")]
-    public class BookingsController : Controller
+    [Area("Employee")]
+    public class RevenueReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BookingsController(ApplicationDbContext context)
+        public RevenueReportsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Bookings
+        // GET: Employee/RevenueReports
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Bookings.ToListAsync());
+            return View(await _context.RevenueReports.ToListAsync());
         }
 
-        // GET: Admin/Bookings/Details/5
+        // GET: Employee/RevenueReports/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,39 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .FirstOrDefaultAsync(m => m.BookingId == id);
-            if (booking == null)
+            var revenueReport = await _context.RevenueReports
+                .FirstOrDefaultAsync(m => m.RevenueReportId == id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
 
-            return View(booking);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Bookings/Create
+        // GET: Employee/RevenueReports/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Bookings/Create
+        // POST: Employee/RevenueReports/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,BookingDate,GuestName,PhoneNumber,Note")] Booking booking)
+        public async Task<IActionResult> Create([Bind("RevenueReportId,StartDate,EndDate,TotalRevenue,EmployeeEmail")] RevenueReport revenueReport)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(booking);
+                _context.Add(revenueReport);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(booking);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Bookings/Edit/5
+        // GET: Employee/RevenueReports/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
+            var revenueReport = await _context.RevenueReports.FindAsync(id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
-            return View(booking);
+            return View(revenueReport);
         }
 
-        // POST: Admin/Bookings/Edit/5
+        // POST: Employee/RevenueReports/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,BookingDate,GuestName,PhoneNumber,Status,Note")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("RevenueReportId,StartDate,EndDate,TotalRevenue,EmployeeEmail")] RevenueReport revenueReport)
         {
-            if (id != booking.BookingId)
+            if (id != revenueReport.RevenueReportId)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(booking);
+                    _context.Update(revenueReport);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookingExists(booking.BookingId))
+                    if (!RevenueReportExists(revenueReport.RevenueReportId))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(booking);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Bookings/Delete/5
+        // GET: Employee/RevenueReports/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +125,34 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .FirstOrDefaultAsync(m => m.BookingId == id);
-            if (booking == null)
+            var revenueReport = await _context.RevenueReports
+                .FirstOrDefaultAsync(m => m.RevenueReportId == id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
 
-            return View(booking);
+            return View(revenueReport);
         }
 
-        // POST: Admin/Bookings/Delete/5
+        // POST: Employee/RevenueReports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking != null)
+            var revenueReport = await _context.RevenueReports.FindAsync(id);
+            if (revenueReport != null)
             {
-                _context.Bookings.Remove(booking);
+                _context.RevenueReports.Remove(revenueReport);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookingExists(int id)
+        private bool RevenueReportExists(int id)
         {
-            return _context.Bookings.Any(e => e.BookingId == id);
+            return _context.RevenueReports.Any(e => e.RevenueReportId == id);
         }
     }
 }

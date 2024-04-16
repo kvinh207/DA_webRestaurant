@@ -57,7 +57,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenuItemId,ItemName,Price,ImageUrl,CategoryId")] MenuItem menuItem)
+        public async Task<IActionResult> Create([Bind("ItemName,Price,ImageUrl,CategoryId")] MenuItem menuItem)
         {
             if (ModelState.IsValid)
             {

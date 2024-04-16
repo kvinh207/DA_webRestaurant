@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity
 {
-    public enum Status
+    public enum StatusBooking
     {
         Reserved,
         Canceled,
@@ -15,39 +15,16 @@ namespace Entity
     {
         public Booking()
         {
-            if(tables == null)
-            {
-                TableCount = 0;
-                return;
-            }
-            TableCount = tables.CountTable();
+            Status = StatusBooking.Reserved;
         }
         [Key]
         public int BookingId { get; set; }
         [NotMapped]
-        public TableList? tables { get; set; }
-        public int? TableCount { get; set; }
-        public int PeopleCount { get; set; }
+        public int? PeopleCount { get; set; }
         public DateTime BookingDate { get; set; }
         public string GuestName { get; set; }
         public string PhoneNumber { get; set; }
-        public Status? Status { get; set; }
-        [Keyless]
-        public class TableList
-        {
-            public IEnumerable<Table> tables { get; set; } = new List<Table>();
-            public int CountTable()
-            {
-                int count = 0;
-
-                foreach (var item in tables)
-                {
-                    count++;
-                }
-                return count;
-            }
-
-        }
-
+        public StatusBooking? Status { get; set; }
+        public string Note {  get; set; }
     }
 }

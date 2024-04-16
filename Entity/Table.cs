@@ -29,7 +29,7 @@ namespace Entity
         public TableType? Type { get; set; }
         public int NumberOfSeats { get; set; }
         public bool IsReserved { get; set; }
-        public TableStatus Status { get; set; }
+        public TableStatus? Status { get; set; }
 
         /*public Table(TableType type)
         {

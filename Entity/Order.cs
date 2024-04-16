@@ -9,41 +9,12 @@ namespace Entity
         public Order()
         {
             OrderDate = DateTime.Now;
-            OrderItems = new OrderItemsList();
-            CalculateTotalPrice();
+            OrderItems = new List<MenuItem>();
         }
         [Key]
         public int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
-        [NotMapped]
-        public OrderItemsList OrderItems { get; set; }
-        public float TotalPrice { get; private set; }
-
-        public int TableId { get; set; }
-        [ForeignKey(nameof(TableId))]
-        public Table Table { get; set; }
-
-        private void CalculateTotalPrice()
-        {
-            TotalPrice = OrderItems.CalculatePrice();
-        }
-        [Keyless]
-
-        public class OrderItemsList
-        {
-            public IEnumerable<MenuItem> Items { get; set; } = new List<MenuItem>();
-
-            public float CalculatePrice()
-            {
-                float totalPrice = 0;
-
-                foreach (var item in Items)
-                {
-                    totalPrice += item.Price;
-                }
-
-                return totalPrice;
-            }
-        }
+        public ICollection<MenuItem>? OrderItems { get; set; }
+        public float? TotalPrice { get; set; }
     }
 }

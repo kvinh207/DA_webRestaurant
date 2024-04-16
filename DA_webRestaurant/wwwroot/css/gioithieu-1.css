@@ -1,0 +1,159 @@
+body {
+    font-family: sans-serif;
+    background-color: #091521;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+
+    background-color: #0f0b0b;
+    height: 500px;
+    padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #fcfcfc;
+    
+}
+p{
+    color: #000;
+}
+h2{
+    color: #fcfcfc;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fcfcfc;
+}
+#slogan{
+    background-color: #000;
+
+}
+main {
+    text-align: center;
+    margin-top: 100px;
+    margin-left: 15%;
+    margin-right: 10%;
+    display: grid;
+    grid-template-columns: calc(50% - (30px * 1/2)) calc(50% - (30px * 1/2));
+}
+
+section {
+
+    margin: 2px;
+   
+}
+
+.dishes{
+  
+    height: 300px;
+}
+.dishes ul {
+    list-style: none;
+    padding: 0;
+    color: #fcfcfc;
+    
+}
+
+.dishes li {
+    margin-bottom: 10px;
+    color: #fcfcfc;
+}
+
+.services{
+}
+.services ul {
+    list-style: none;
+    padding: 0;
+    color: #fcfcfc;
+}
+
+.services li {
+    margin-bottom: 10px;
+    color: #fcfcfc;
+}
+
+.book-now {
+    text-align: center;
+}
+
+.btn {
+    display: grid;
+    justify-content: center;
+    width: 200px;
+    background-color: #43a0fd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+footer {
+    background-color:#091521;
+    padding: 20px;
+    text-align: center;
+    color: #fcfcfc;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    color: #fcfcfc;
+}
+
+footer li {
+    display: inline-block;
+    margin-right: 20px;
+    color: #fcfcfc;
+}
+header {
+    background-color:#091521;
+    padding: 20px;
+    text-align: center;
+    color: #fcfcfc;
+}
+
+
+
+nav {
+    /* Style for navigation links */
+}
+
+.image-slider {
+    background-color: #091521;
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+    position: relative;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slides li {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.slides li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Add styles for navigation buttons (if using) */
