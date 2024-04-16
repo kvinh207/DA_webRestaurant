@@ -50,9 +50,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderId,OrderDate,TotalPrice")] Order order)
@@ -82,9 +80,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Admin/Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDate,TotalPrice")] Order order)
@@ -117,7 +113,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(order);
         }
 
-        // GET: Admin/Orders/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,8 +121,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+            var order = await _context.Orders.FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
@@ -135,7 +130,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Admin/Orders/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

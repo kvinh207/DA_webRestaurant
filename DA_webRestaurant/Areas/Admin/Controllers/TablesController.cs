@@ -20,13 +20,11 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Tables
         public async Task<IActionResult> Index()
         {
             return View(await _context.Tables.ToListAsync());
         }
 
-        // GET: Admin/Tables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,30 +42,27 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(table);
         }
 
-        // GET: Admin/Tables/Create
+     
         public IActionResult Create()
         {
             var table = new Table();
             return View(table);
         }
 
-        // POST: Admin/Tables/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TableId,Type,NumberOfSeats,IsReserved,Status")] Table table)
         {
-            if (ModelState.IsValid)
-            {
+			
+			
                 _context.Add(table);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(table);
+
+
         }
 
-        // GET: Admin/Tables/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,9 +78,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(table);
         }
 
-        // POST: Admin/Tables/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+ 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TableId,Type,NumberOfSeats,IsReserved,Status")] Table table)
@@ -118,7 +111,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(table);
         }
 
-        // GET: Admin/Tables/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +128,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(table);
         }
 
-        // POST: Admin/Tables/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -155,5 +147,28 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         {
             return _context.Tables.Any(e => e.TableId == id);
         }
-    }
+
+
+
+		public async Task<IActionResult> Search(TableType? tableType, TableStatus? tableStatus)
+		{
+			var tables = _context.Tables.AsQueryable();
+
+			if (tableType != null)
+			{
+				tables = tables.Where(m => m.Type == tableType);
+			}
+
+			if (tableStatus != null)
+			{
+				tables = tables.Where(m => m.Status == tableStatus);
+			}
+
+			return View("Index", await tables.ToListAsync());
+		}
+
+
+
+
+	}
 }
