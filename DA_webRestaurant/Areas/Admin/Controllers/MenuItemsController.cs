@@ -20,14 +20,14 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/MenuItems
+    
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.MenuItems.Include(m => m.Category);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Admin/MenuItems/Details/5
+    
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,14 +46,14 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(menuItem);
         }
 
-        // GET: Admin/MenuItems/Create
+   
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
             return View();
         }
 
-        // POST: Admin/MenuItems/Create
+    
     
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,7 +69,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(menuItem);
         }
 
-        // GET: Admin/MenuItems/Edit/5
+     
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,7 +86,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(menuItem);
         }
 
-        // POST: Admin/MenuItems/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -121,7 +120,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(menuItem);
         }
 
-        // GET: Admin/MenuItems/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

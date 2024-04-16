@@ -9,6 +9,7 @@ using DAL.Context;
 using Entity;
 using DAL;
 using DA_webRestaurant.Areas.Admin.ViewModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DA_webRestaurant.Areas.Admin.Controllers
 {
@@ -51,10 +52,11 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // GET: Admin/Bookings/Create
-        public IActionResult Create()
+		// GET: Admin/Bookings/Create
+		public IActionResult Create()
         {
-            var tablelist = _unitOfWork.tableRepository.GetAll();
+			
+			var tablelist = _unitOfWork.tableRepository.GetAll();
 
             var bookingVM = new BookingVM
             {
@@ -95,7 +97,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // POST: Admin/Bookings/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -129,7 +130,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // GET: Admin/Bookings/Delete/5
+     
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +148,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // POST: Admin/Bookings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

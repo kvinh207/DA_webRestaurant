@@ -44,13 +44,15 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(category);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
+		public IActionResult Create()
+		{
+			ViewBag.CategoryTypes = new SelectList(Enum.GetValues(typeof(CategoryType)));
+			return View();
+		}
 
 
-        [HttpPost]
+
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Type")] Category category)
         {
@@ -79,9 +81,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Admin/Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Type")] Category category)
@@ -114,7 +113,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Categories/Delete/5
+     
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,7 +131,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Admin/Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
