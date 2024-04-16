@@ -54,8 +54,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         }
 
         // POST: Admin/MenuItems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MenuItemId,ItemName,Price,ImageUrl,CategoryId")] MenuItem menuItem)
@@ -88,8 +87,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         }
 
         // POST: Admin/MenuItems/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MenuItemId,ItemName,Price,ImageUrl,CategoryId")] MenuItem menuItem)
@@ -142,7 +140,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(menuItem);
         }
 
-        // POST: Admin/MenuItems/Delete/5
+ 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -161,5 +159,22 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         {
             return _context.MenuItems.Any(e => e.MenuItemId == id);
         }
+
+        public async Task<IActionResult> Search(string searchString)
+        {
+           
+            var menuItems = await _context.MenuItems.ToListAsync();
+
+     
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return View("Index", menuItems);
+            }
+        
+            var filteredMenuItems = menuItems.Where(item => item.ItemName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            return View("Index", filteredMenuItems);
+        }
+
     }
 }

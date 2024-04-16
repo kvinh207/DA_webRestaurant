@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Context;
 using Entity;
 
-namespace DA_webRestaurant.Areas.Admin
+namespace DA_webRestaurant.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoriesController : Controller
+    public class RevenueReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public RevenueReportsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Categories
+        // GET: Admin/RevenueReports
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.RevenueReports.ToListAsync());
         }
 
-        // GET: Admin/Categories/Details/5
+        // GET: Admin/RevenueReports/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,38 @@ namespace DA_webRestaurant.Areas.Admin
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            var revenueReport = await _context.RevenueReports
+                .FirstOrDefaultAsync(m => m.RevenueReportId == id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Categories/Create
+        // GET: Admin/RevenueReports/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Admin/RevenueReports/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type")] Category category)
+        public async Task<IActionResult> Create([Bind("RevenueReportId,StartDate,EndDate,TotalRevenue,EmployeeEmail")] RevenueReport revenueReport)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(revenueReport);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Categories/Edit/5
+        // GET: Admin/RevenueReports/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +73,21 @@ namespace DA_webRestaurant.Areas.Admin
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
+            var revenueReport = await _context.RevenueReports.FindAsync(id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(revenueReport);
         }
 
-        // POST: Admin/Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Admin/RevenueReports/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("RevenueReportId,StartDate,EndDate,TotalRevenue,EmployeeEmail")] RevenueReport revenueReport)
         {
-            if (id != category.Id)
+            if (id != revenueReport.RevenueReportId)
             {
                 return NotFound();
             }
@@ -98,12 +96,12 @@ namespace DA_webRestaurant.Areas.Admin
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(revenueReport);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!RevenueReportExists(revenueReport.RevenueReportId))
                     {
                         return NotFound();
                     }
@@ -114,10 +112,10 @@ namespace DA_webRestaurant.Areas.Admin
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(revenueReport);
         }
 
-        // GET: Admin/Categories/Delete/5
+        // GET: Admin/RevenueReports/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +123,34 @@ namespace DA_webRestaurant.Areas.Admin
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            var revenueReport = await _context.RevenueReports
+                .FirstOrDefaultAsync(m => m.RevenueReportId == id);
+            if (revenueReport == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(revenueReport);
         }
 
-        // POST: Admin/Categories/Delete/5
+        // POST: Admin/RevenueReports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category != null)
+            var revenueReport = await _context.RevenueReports.FindAsync(id);
+            if (revenueReport != null)
             {
-                _context.Category.Remove(category);
+                _context.RevenueReports.Remove(revenueReport);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool RevenueReportExists(int id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.RevenueReports.Any(e => e.RevenueReportId == id);
         }
     }
 }
