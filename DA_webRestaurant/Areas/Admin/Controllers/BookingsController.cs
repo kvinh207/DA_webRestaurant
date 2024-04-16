@@ -44,8 +44,8 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // GET: Admin/Bookings/Create
-        public IActionResult Create()
+		// GET: Admin/Bookings/Create
+		public IActionResult Create()
         {
             return View();
         }
@@ -117,7 +117,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // GET: Admin/Bookings/Delete/5
+     
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +135,6 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(booking);
         }
 
-        // POST: Admin/Bookings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

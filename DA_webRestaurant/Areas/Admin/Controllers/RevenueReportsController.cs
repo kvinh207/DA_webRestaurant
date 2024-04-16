@@ -24,13 +24,13 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/RevenueReports
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.RevenueReports.ToListAsync());
         }
 
-        // GET: Admin/RevenueReports/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,13 +48,13 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(revenueReport);
         }
 
-        // GET: Admin/RevenueReports/Create
+        
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/RevenueReports/Create
+    
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,7 +106,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(revenueReport);
         }
 
-        // POST: Admin/RevenueReports/Edit/5
+   
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -140,7 +140,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(revenueReport);
         }
 
-        // GET: Admin/RevenueReports/Delete/5
+   
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -158,7 +158,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(revenueReport);
         }
 
-        // POST: Admin/RevenueReports/Delete/5
+    
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

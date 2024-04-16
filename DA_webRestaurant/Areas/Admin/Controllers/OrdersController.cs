@@ -25,13 +25,13 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Orders
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.ToListAsync());
         }
 
-        // GET: Admin/Orders/Details/5
+   
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,7 +49,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
             return View(order);
         }
 
-        // GET: Admin/Orders/Create
+  
         public IActionResult Create()
         {
             var viewModel = new OrderViewModel
