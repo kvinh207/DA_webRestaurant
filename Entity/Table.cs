@@ -8,7 +8,8 @@ namespace Entity
         Ban_4_Nguoi,
         Ban_6_Nguoi,
         Ban_1_Nguoi,
-        Ban_Couple
+        Ban_Couple,
+        Ban_10_Nguoi
     }
 
     public enum TableStatus

@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gioithieu</title>
+    <link rel="stylesheet" href="~/css/gioithieu.css">
+</head>
+<body>
+    <header>
+        <h1>DA Restaurant</h1>
+        <div id="slogan"> Nơi ẩm thực là niềm đam mê và thưởng thức là trải nghiệm </div>
+        <div class="image-slider">
+
+            <ul class="slides">
+                <li><img src="https://menuonline.vn/public/responsive_filemanager/source/tin-tuc/bai-dang-dot-3/b%C3%A0i%2010/nha-hang-re-1.jpg" alt="Image 1"></li>
+                <li><img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/75/2020/05/23091232/The-Square-restaurant-2.jpg" alt="Image 2"></li>
+                <li><img src="https://anviethouse.vn/wp-content/uploads/2021/12/Thiet-ke-nha-hang-Han-Quoc-2-6.png" alt="Image 3"></li>
+            </ul>
+            <script>
+                // Get the slides
+                const slides = document.querySelectorAll('.slides li');
+
+                // Get the current slide index
+                let currentSlide = 0;
+
+                // Show the current slide
+                function showSlide(index) {
+                    slides.forEach(slide => slide.style.display = 'none');
+                    slides[index].style.display = 'block';
+                }
+
+                // Show the next slide
+                function nextSlide() {
+                    currentSlide++;
+                    if (currentSlide === slides.length) {
+                        currentSlide = 0;
+                    }
+                    showSlide(currentSlide);
+                }
+
+                // Show the previous slide
+                function prevSlide() {
+                    currentSlide--;
+                    if (currentSlide < 0) {
+                        currentSlide = slides.length - 1;
+                    }
+                    showSlide(currentSlide);
+                }
+
+                // Add navigation buttons (if desired)
+                const nextButton = document.querySelector('.next-button');
+                const prevButton = document.querySelector('.prev-button');
+
+                if (nextButton) {
+                    nextButton.addEventListener('click', nextSlide);
+                }
+
+                if (prevButton) {
+                    prevButton.addEventListener('click', prevSlide);
+                }
+
+                // Autoplay (optional)
+                setInterval(nextSlide, 5000); // Change 5000 to desired interval in milliseconds
+            </script>
+        </div>
+    </header>
+
+    <main>
+        <section class="dishes">
+            <h2>Thưởng thức các món ăn đặc trưng</h2>
+            <ul>
+                <li>Rồng Xanh Vượt Đại Dương</li>
+                <li>Tôm Rồng cuộn Mây</li>
+                <li>Mặt Trời Ngủ Trong Mây</li>
+            </ul>
+        </section>
+
+        <section class="services">
+            <h2>Dịch vụ</h2>
+            <ul>
+                <li>Nhổ Râu Bằng Răng</li>
+                <li>Đưa đón tận noi</li>
+                <li>Phục vụ tận tâm</li>
+            </ul>
+            <div> <a href="#" class="btn">Đặt bàn ngay!</a></div>
+        </section>
+
+
+    </main>
+
+    <footer>
+        <p>&copy; DA Restaurant 2024</p>
+        <ul>
+            <li>[Số điện thoại]</li>
+            <li>[Địa chỉ]</li>
+            <li>[Trang web]</li>
+            <li>[Mạng xã hội]</li>
+        </ul>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

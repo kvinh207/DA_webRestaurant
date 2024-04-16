@@ -15,20 +15,23 @@ namespace Entity
     {
         public Booking()
         {
+            if(tables == null)
+            {
+                TableCount = 0;
+                return;
+            }
             TableCount = tables.CountTable();
         }
         [Key]
         public int BookingId { get; set; }
         [NotMapped]
-        public TableList tables { get; set; }
-        public int TableCount { get; set; }
+        public TableList? tables { get; set; }
+        public int? TableCount { get; set; }
+
+        public int PeopleCount { get; set; }
 
         public DateTime BookingDate { get; set; }
-
-        [ForeignKey(nameof(ApplicationUser))]
         public string GuestName { get; set; }
-        public ApplicationUser Guest { get; set; }
-
         public Status Status { get; set; }
         [Keyless]
         public class TableList

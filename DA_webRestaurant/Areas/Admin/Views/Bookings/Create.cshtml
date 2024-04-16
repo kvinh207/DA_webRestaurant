@@ -1,49 +1,92 @@
 ﻿@model Entity.Booking
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "View";
     Layout = "~/Areas/Admin/Shared/_LayoutPage1Admin.cshtml";
+
 }
 
-<h1>Create</h1>
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TableCount" class="control-label"></label>
-                <input asp-for="TableCount" class="form-control" />
-                <span asp-validation-for="TableCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" />
-                <span asp-validation-for="BookingDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuestName" class="control-label"></label>
-                <input asp-for="GuestName" class="form-control" />
-                <span asp-validation-for="GuestName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- link bên VSCode -->
+    <link rel="stylesheet" href="styles.min.css">
+    <link rel="stylesheet" href="booking-styles.css">
+    <!--  -->
+    <!-- link bên VStudio -->
+    <link rel="stylesheet" href="~/css/styles.min.css" />
+    <link rel="stylesheet" href="~/css/booking-styles.css">
+    <!--  -->
+
+</head>
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+            @* <!-- Footer Start -->
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; Web-Restaurant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+            <!-- Footer End -->
+        </aside> *@
+        <!--  Sidebar End -->
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <main>
+                <section id="booking-section">
+                    <h1>Đặt bàn</h1>
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="name">Tên khách hàng:</label>
+                            <input asp-for="GuestName" type="text" id="name" name="name" value="Ten khach hang" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Số lượng người:</label>
+                            <input asp-for="PeopleCount" type="number" id="guests" name="guests" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="datetime">Ngày giờ đặt bàn:</label>
+                            <input type="datetime-local" id="datetime" name="datetime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Ghi chú:</label>
+                            <textarea id="note" name="note"></textarea>
+                        </div>
+                        <button type="submit">Đặt bàn</button>
+                    </form>
+                </section>
+            </main>
+            <!-- Content End -->
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
 
+</html>
+@* @IgnoreSection("Scripts")
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} *@

@@ -1,0 +1,45 @@
+
+    /* Basic panel styles */
+    .panel {
+      background-color: #88e5b0;
+      border: 1px solid #100303;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      padding: 20px;
+      width: 300px; /* Adjust width as needed */
+      margin-top: 30px;
+
+    }
+
+    .panel-heading {
+      background-color: #e0e0e0;
+      border-bottom: 1px solid #ccc;
+      padding: 6px;
+    }
+
+    .panel-heading h3 {
+      margin: 0;
+    }
+
+    .panel-body {
+      padding: 10px;
+    }
+
+    /* Button styles */
+    .btn {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #3e8e41; /* Darker green */
+    }
+ 

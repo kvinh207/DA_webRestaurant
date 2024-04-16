@@ -52,6 +52,23 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    BookingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TableCount = table.Column<int>(type: "int", nullable: true),
+                    PeopleCount = table.Column<int>(type: "int", nullable: false),
+                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GuestName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.BookingId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
@@ -187,28 +204,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bookings",
-                columns: table => new
-                {
-                    BookingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TableCount = table.Column<int>(type: "int", nullable: false),
-                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GuestName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bookings", x => x.BookingId);
-                    table.ForeignKey(
-                        name: "FK_Bookings_AspNetUsers_GuestId",
-                        column: x => x.GuestId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RevenueReports",
                 columns: table => new
                 {
@@ -310,11 +305,6 @@ namespace DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_GuestId",
-                table: "Bookings",
-                column: "GuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItems_CategoryId",

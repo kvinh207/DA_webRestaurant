@@ -102,22 +102,20 @@ namespace DAL.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GuestId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("GuestName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PeopleCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("TableCount")
+                    b.Property<int?>("TableCount")
                         .HasColumnType("int");
 
                     b.HasKey("BookingId");
-
-                    b.HasIndex("GuestId");
 
                     b.ToTable("Bookings");
                 });
@@ -378,15 +376,6 @@ namespace DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Entity.Booking", b =>
-                {
-                    b.HasOne("Entity.ApplicationUser", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId");
-
-                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("Entity.MenuItem", b =>

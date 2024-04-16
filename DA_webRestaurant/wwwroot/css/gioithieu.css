@@ -1,0 +1,150 @@
+body {
+    font-family: sans-serif;
+    
+    margin: 0;
+    padding: 0;
+}
+
+header {
+
+    background-color: #0f0b0b;
+    height: 500px;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #090101;
+    
+}
+p{
+    color: #000;
+}
+h2{
+    color: #fcfcfc;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fcfcfc;
+}
+#slogan{
+    background-color: #000;
+
+}
+main {
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: calc(50% - (30px * 1/2)) calc(50% - (30px * 1/2));
+}
+
+section {
+    margin-bottom: 20px;
+    margin: 30px;
+   
+}
+
+.dishes{
+    background-image: url("https://media-cdn.tripadvisor.com/media/photo-s/15/c5/84/65/khong-gian-nha-hang-vu.jpg");
+    height: 300px;
+}
+.dishes ul {
+    list-style: none;
+    padding: 0;
+    color: #b4f4a1;
+    
+}
+
+.dishes li {
+    margin-bottom: 10px;
+    color: #c8fa8c;
+}
+
+.services{
+    background-image: url("https://media-cdn.tripadvisor.com/media/photo-s/05/d2/7e/3e/la-vong.jpg");
+}
+.services ul {
+    list-style: none;
+    padding: 0;
+    color: #fcfcfc;
+}
+
+.services li {
+    margin-bottom: 10px;
+    color: #fcfcfc;
+}
+
+.book-now {
+    text-align: center;
+}
+
+.btn {
+    background-color: #091521;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+footer {
+    background-color: #99d7ec;
+    padding: 20px;
+    text-align: center;
+    color: #fcfcfc;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    color: #fcfcfc;
+}
+
+footer li {
+    display: inline-block;
+    margin-right: 20px;
+    color: #fcfcfc;
+}
+header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    color: #fcfcfc;
+}
+
+
+
+nav {
+    /* Style for navigation links */
+}
+
+.image-slider {
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+    position: relative;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slides li {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.slides li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Add styles for navigation buttons (if using) */

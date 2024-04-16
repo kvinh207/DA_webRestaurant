@@ -1,5 +1,4 @@
-﻿@*@model List<Đồ_án_lập_trình_web.Models.Product>*@
-
+﻿
 
 <!doctype html>
 <html>
@@ -108,7 +107,7 @@
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  Header Start -->
-            <header class="app-header">
+            @* <header class="app-header">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -138,10 +137,10 @@
                         </ul>
                     </div>
                 </nav>
-            </header>
+            </header> *@
             <!--  Header End -->
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding-top: 10px">
                 @RenderBody()
             </div>
 
