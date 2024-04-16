@@ -21,7 +21,6 @@ namespace Entity
         [NotMapped]
         public Orders? orders { get; private set; }
         public string EmployeeEmail { get; set; }
-        public ApplicationUser? Employee { get; set; }
 
         public void CalculateRevenue()
         {

@@ -35,7 +35,7 @@ namespace DAL
                 {
                     _tableRepository = new BaseRepository<Table>(_context);
                 }
-                return tableRepository;
+                return _tableRepository;
             }
         }
 
@@ -47,7 +47,7 @@ namespace DAL
                 {
                     _menuItemRepository = new BaseRepository<MenuItem>(_context);
                 }
-                return menuItemRepository;
+                return _menuItemRepository;
             }
         }
         public BaseRepository<Category> CategoryRepository

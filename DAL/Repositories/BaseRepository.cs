@@ -51,11 +51,6 @@ namespace DAL.Repositories
             }
         }
 
-        public IEnumerable<T> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public T GetById(object id)
         {
             return _dbSet.Find(id);

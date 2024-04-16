@@ -15,23 +15,25 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control"></select>
+                <select id="tableTypeDropdown" asp-for="Type" class="form-control">
+                    <option value="">Select Table Type</option>
+                    @foreach (var tableType in Enum.GetValues(typeof(TableType)))
+                    {
+                        <option value="@tableType">@tableType</option>
+                    }
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="NumberOfSeats" class="control-label"></label>
-                <input asp-for="NumberOfSeats" class="form-control" />
+                <input asp-for="NumberOfSeats" class="form-control" id="numberOfSeatsInput" readonly>
                 <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsReserved" /> @Html.DisplayNameFor(model => model.IsReserved)
                 </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -44,6 +46,44 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tableTypeDropdown = document.getElementById('tableTypeDropdown');
+        var numberOfSeatsInput = document.getElementById('numberOfSeatsInput');
+
+        tableTypeDropdown.addEventListener('change', function () {
+            var selectedType = this.value;
+
+            // Call the client-side function to get the number of seats
+            var numberOfSeats = getNumberOfSeats(selectedType);
+
+            // Update the input value with the calculated number of seats
+            numberOfSeatsInput.value = numberOfSeats;
+        });
+
+        // Function to calculate the number of seats based on the selected table type
+        function getNumberOfSeats(tableType) {
+            switch (tableType) {
+                case 'Ban_2_Nguoi':
+                    return 2;
+                case 'Ban_4_Nguoi':
+                    return 4;
+                case 'Ban_6_Nguoi':
+                    return 6;
+                case 'Ban_10_Nguoi':
+                    return 10;
+                case 'Ban_1_Nguoi':
+                    return 6; // Assuming you want 6 seats for this type
+                case 'Ban_Couple':
+                    return 2; // Assuming you want 2 seats for this type
+                default:
+                    return 0; // Default value if no matching type is found
+            }
+        }
+
+        // Trigger the change event to populate the number of seats on page load
+        tableTypeDropdown.dispatchEvent(new Event('change'));
+    });
+</script>
+
+

@@ -12,8 +12,8 @@ namespace Entity
         public float Price { get; set; }
         public string ImageUrl { get; set; }
 
-        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
+        [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
 
     }

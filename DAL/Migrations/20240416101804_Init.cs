@@ -61,7 +61,8 @@ namespace DAL.Migrations
                     PeopleCount = table.Column<int>(type: "int", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GuestName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,12 +83,28 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RevenueReports",
+                columns: table => new
+                {
+                    RevenueReportId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TotalRevenue = table.Column<float>(type: "real", nullable: false),
+                    EmployeeEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RevenueReports", x => x.RevenueReportId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tables",
                 columns: table => new
                 {
                     TableId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: true),
                     NumberOfSeats = table.Column<int>(type: "int", nullable: false),
                     IsReserved = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -204,28 +221,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RevenueReports",
-                columns: table => new
-                {
-                    RevenueReportId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TotalRevenue = table.Column<float>(type: "real", nullable: false),
-                    EmployeeEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RevenueReports", x => x.RevenueReportId);
-                    table.ForeignKey(
-                        name: "FK_RevenueReports_AspNetUsers_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MenuItems",
                 columns: table => new
                 {
@@ -244,7 +239,7 @@ namespace DAL.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,7 +250,7 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<float>(type: "real", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: true)
+                    TableId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -264,7 +259,8 @@ namespace DAL.Migrations
                         name: "FK_Orders_Tables_TableId",
                         column: x => x.TableId,
                         principalTable: "Tables",
-                        principalColumn: "TableId");
+                        principalColumn: "TableId",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -315,11 +311,6 @@ namespace DAL.Migrations
                 name: "IX_Orders_TableId",
                 table: "Orders",
                 column: "TableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RevenueReports_EmployeeId",
-                table: "RevenueReports",
-                column: "EmployeeId");
         }
 
         /// <inheritdoc />
@@ -356,13 +347,13 @@ namespace DAL.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Tables");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

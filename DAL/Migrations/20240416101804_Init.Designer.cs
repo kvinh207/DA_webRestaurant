@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240416063056_Init")]
+    [Migration("20240416101804_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -112,7 +112,11 @@ namespace DAL.Migrations
                     b.Property<int>("PeopleCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<int?>("TableCount")
@@ -179,7 +183,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TableId")
+                    b.Property<int>("TableId")
                         .HasColumnType("int");
 
                     b.Property<float>("TotalPrice")
@@ -204,9 +208,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -217,8 +218,6 @@ namespace DAL.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("RevenueReportId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("RevenueReports");
                 });
@@ -240,7 +239,7 @@ namespace DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
+                    b.Property<int?>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("TableId");
@@ -394,18 +393,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entity.Order", b =>
                 {
-                    b.HasOne("Entity.Table", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("TableId");
-                });
-
-            modelBuilder.Entity("Entity.RevenueReport", b =>
-                {
-                    b.HasOne("Entity.ApplicationUser", "Employee")
+                    b.HasOne("Entity.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Employee");
+                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -457,11 +451,6 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entity.Table", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

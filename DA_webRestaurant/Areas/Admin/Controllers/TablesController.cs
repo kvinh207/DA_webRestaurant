@@ -47,7 +47,8 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         // GET: Admin/Tables/Create
         public IActionResult Create()
         {
-            return View();
+            var table = new Table();
+            return View(table);
         }
 
         // POST: Admin/Tables/Create

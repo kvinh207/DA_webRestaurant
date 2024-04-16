@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Context;
 using Entity;
 using DAL;
+using DA_webRestaurant.Areas.Admin.ViewModel;
 
 namespace DA_webRestaurant.Areas.Admin.Controllers
 {
@@ -38,8 +39,10 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .FirstOrDefaultAsync(m => m.BookingId == id);
+            var booking = _unitOfWork.BookingRepository.GetById(id);
+
+            /*var booking = await _context.Bookings
+                .FirstOrDefaultAsync(m => m.BookingId == id);*/
             if (booking == null)
             {
                 return NotFound();
@@ -51,7 +54,14 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         // GET: Admin/Bookings/Create
         public IActionResult Create()
         {
-            return View();
+            var tablelist = _unitOfWork.tableRepository.GetAll();
+
+            var bookingVM = new BookingVM
+            {
+                Table = tablelist
+            };
+
+            return View(bookingVM);
         }
 
         // POST: Admin/Bookings/Create
@@ -59,7 +69,7 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,TableCount,BookingDate,GuestName,Status")] Booking booking)
+        public async Task<IActionResult> Create([Bind("TableCount,BookingDate,GuestName,Status")] BookingVM booking)
         {
             if (ModelState.IsValid)
             {
@@ -157,6 +167,13 @@ namespace DA_webRestaurant.Areas.Admin.Controllers
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.BookingId == id);
+        }
+
+        [HttpPost, ActionName("LoadTables")]
+        public async Task<IActionResult> LoadTables()
+        {
+            var tables = _unitOfWork.tableRepository.GetAll();
+            return View(tables);
         }
     }
 }

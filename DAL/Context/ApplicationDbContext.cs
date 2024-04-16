@@ -10,7 +10,9 @@ namespace DAL.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
+
         }
+
         public DbSet<ApplicationUser> User { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }

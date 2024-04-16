@@ -27,12 +27,11 @@ namespace Entity
         [NotMapped]
         public TableList? tables { get; set; }
         public int? TableCount { get; set; }
-
         public int PeopleCount { get; set; }
-
         public DateTime BookingDate { get; set; }
         public string GuestName { get; set; }
-        public Status Status { get; set; }
+        public string PhoneNumber { get; set; }
+        public Status? Status { get; set; }
         [Keyless]
         public class TableList
         {

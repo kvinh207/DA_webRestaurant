@@ -63,28 +63,78 @@ app.UseStaticFiles();
 app.UseRouting();
 app.MapRazorPages();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
 
-    try
-    {
-        // Retrieve the role manager service
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-        // Ensure roles exist
-        await EnsureRolesExist(roleManager);
-    }
-    catch (Exception ex)
-    {
-        // Handle any exceptions
-        Console.WriteLine("An error occurred while ensuring roles exist: " + ex.Message);
-    }
-}
 
 
 app.UseAuthorization();
 app.UseSession();
+
+using var scope = app.Services.CreateScope();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
+var employeeRoleExists = await roleManager.RoleExistsAsync("Employee");
+if (!adminRoleExists || !employeeRoleExists)
+{
+    await roleManager.CreateAsync(new IdentityRole("Admin"));
+    await roleManager.CreateAsync(new IdentityRole("Employee"));
+}
+
+var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
+var employeeUser = await userManager.FindByEmailAsync("employee@gmail.com");
+if (adminUser == null)
+{
+    var newAdminUser = new ApplicationUser
+    {
+        UserName = "admin@gmail.com",
+        Fullname = "Admin",
+        Email = "admin@gmail.com",
+    };
+
+    var newEmployeeUser = new ApplicationUser
+    {
+        UserName = "employee@gmail.com",
+        Fullname = "Emplyee",
+        Email = "employee@gmail.com",
+    };
+
+    var result = await userManager.CreateAsync(newAdminUser, "123456");
+    var result1 = await userManager.CreateAsync(newEmployeeUser, "123456");
+    if (result.Succeeded || result1.Succeeded)
+    {
+        await userManager.AddToRoleAsync(newAdminUser, "Admin");
+        await userManager.AddToRoleAsync(newAdminUser, "Employee");
+    }
+    
+}
+
+var rolesToCreate = new List<string> { "Admin", "Customer", "Employee" };
+
+foreach (var roleName in rolesToCreate)
+{
+    // Check if the role exists
+    var roleExists = await roleManager.RoleExistsAsync(roleName);
+
+    // If the role doesn't exist, create it
+    if (!roleExists)
+    {
+        var role = new IdentityRole(roleName);
+        var result = await roleManager.CreateAsync(role);
+        if (result.Succeeded)
+        {
+            Console.WriteLine($"Role '{roleName}' created successfully.");
+        }
+        else
+        {
+            Console.WriteLine($"Error creating role '{roleName}'.");
+            // Handle error
+        }
+    }
+}
+
+
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -105,24 +155,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-
-static async Task EnsureRolesExist(RoleManager<IdentityRole> roleManager)
-{
-    // List of roles to ensure
-    var roles = new[]
-    {
-        SD.Role_Management,
-        SD.Role_Admin,
-        SD.Role_Customer,
-        SD.Role_Employee,
-    };
-
-    foreach (var roleName in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(roleName))
-        {
-            // Role doesn't exist, create it
-            await roleManager.CreateAsync(new IdentityRole(roleName));
-        }
-    }
-}

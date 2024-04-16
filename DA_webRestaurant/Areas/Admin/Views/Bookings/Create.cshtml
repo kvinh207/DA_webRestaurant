@@ -1,4 +1,4 @@
-﻿@model Entity.Booking
+﻿@model BookingVM
 
 @{
     ViewData["Title"] = "View";
@@ -49,23 +49,29 @@
                     <form id="booking-form">
                         <div class="form-group">
                             <label for="name">Tên khách hàng:</label>
-                            <input asp-for="GuestName" type="text" id="name" name="name" value="Ten khach hang" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="guests">Số lượng người:</label>
-                            <input asp-for="PeopleCount" type="number" id="guests" name="guests" required>
+                            <input asp-for="Booking.GuestName" type="text" id="name" name="name" value="Ten khach hang" required>
                         </div>
                         <div class="form-group">
                             <label for="datetime">Ngày giờ đặt bàn:</label>
-                            <input type="datetime-local" id="datetime" name="datetime" required>
+                            <input asp-for="Booking.BookingDate" type="datetime-local" id="datetime" name="datetime" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại:</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <input asp-for="Booking.PhoneNumber" type="tel" id="phone" name="phone" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email">
+                            <label for="guests">Số lượng người:</label>
+                            <input asp-for="Booking.PeopleCount" type="number" id="guests" name="guests" required>
+                        </div>
+                        <!-- Button to open the popup -->
+                        <button id="openPopupButton">Open Popup</button>
+
+                        <!-- Popup modal -->
+                        <div id="popupModal" style="display: none;">
+                            <div id="gridContainer" class="grid-container">
+                                <!-- Grid items will be populated here -->
+                            </div>
+                            <button id="closePopupButton">Close</button>
                         </div>
                         <div class="form-group">
                             <label for="note">Ghi chú:</label>
@@ -73,6 +79,9 @@
                         </div>
                         <button type="submit">Đặt bàn</button>
                     </form>
+                   
+
+
                 </section>
             </main>
             <!-- Content End -->
@@ -90,3 +99,57 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 } *@
+
+<script>
+    $(document).ready(function () {
+        // Initialize an array to store table data
+        var tables = @Html.Raw(Json.Serialize(Model.Table));
+
+        // Function to populate the grid with items
+        function populateGrid() {
+            // Clear the grid container
+            $("#gridContainer").empty();
+
+            // Populate the grid with items from the tables array
+            tables.forEach(function (table) {
+                // Create a grid item
+                var gridItem = $("<div class='grid-item'>Table: " + table.tableId + "</div>");
+                if (table.isReserved) {
+                    gridItem.addClass('reserved');
+                } else {
+                    gridItem.addClass('available');
+                }
+
+                // Add click event handler to select the item
+                gridItem.click(function () {
+                    // Example: perform some action with the selected item
+                    console.log("Selected table:", table);
+                });
+
+                // Append the grid item to the grid container
+                $("#gridContainer").append(gridItem);
+            });
+        }
+
+        // Event handler for opening the popup
+        $("#openPopupButton").click(function () {
+            // Show the popup
+            $("#popupModal").show();
+
+            // Call a function to populate the grid with items
+            populateGrid();
+        });
+
+        // Event handler for closing the popup
+        $("#closePopupButton").click(function () {
+            // Hide the popup
+            $("#popupModal").hide();
+        });
+
+        // Trigger the change event to populate the number of seats on page load
+        populateGrid();
+    });
+
+
+
+</script>

@@ -19,6 +19,10 @@ namespace Entity
         public OrderItemsList OrderItems { get; set; }
         public float TotalPrice { get; private set; }
 
+        public int TableId { get; set; }
+        [ForeignKey(nameof(TableId))]
+        public Table Table { get; set; }
+
         private void CalculateTotalPrice()
         {
             TotalPrice = OrderItems.CalculatePrice();
